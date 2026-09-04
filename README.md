@@ -2,7 +2,13 @@
 
 Server-side WhatsApp authentication for [Notif Auth](https://auth.notif.ml). Generates OAuth authorization requests with PKCE S256, exchanges authorization codes, and verifies the signed profile using the issuer's public keys.
 
-**Status:** public source, version 0.1.0. npm publication is planned; this package is not yet available from npm as part of this release.
+**Version:** 0.1.0.
+
+## Installation
+
+```bash
+npm install @spaysarldev/notif-auth-node
+```
 
 ## Install from source
 
@@ -16,7 +22,7 @@ npm run check
 npm pack
 
 # From your application's directory:
-npm install /path/to/notif-auth-node/spay-notif-auth-node-0.1.0.tgz
+npm install /path/to/notif-auth-node/spaysarldev-notif-auth-node-0.1.0.tgz
 ```
 
 `npm install github:dione24/notif-auth-node#main` also builds the package from GitHub. Pin a reviewed commit instead of `main` for reproducible production installations.
@@ -28,7 +34,7 @@ npm install /path/to/notif-auth-node/spay-notif-auth-node-0.1.0.tgz
 3. Register the exact callback URL. Live callbacks require HTTPS. Save the client secret on your server.
 
 ```ts
-import { NotifAuth } from '@spay/notif-auth-node';
+import { NotifAuth } from '@spaysarldev/notif-auth-node';
 
 const auth = new NotifAuth({
   clientId: process.env.NOTIF_CLIENT_ID!,
