@@ -1,0 +1,57 @@
+{
+  "name": "@spay/notif-auth-node",
+  "version": "0.1.0",
+  "description": "Server-side OAuth exchange and JWT verification for Notif Auth",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test test/*.test.mjs",
+    "check": "npm run build && npm test",
+    "prepare": "npm run build",
+    "prepack": "npm run check"
+  },
+  "dependencies": {
+    "jose": "^6.1.0"
+  },
+  "engines": {
+    "node": ">=22.12"
+  },
+  "license": "MIT",
+  "author": "SAHEL PAY TECHNOLOGIES (SPAY)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dione24/notif-auth-node.git"
+  },
+  "homepage": "https://github.com/dione24/notif-auth-node#readme",
+  "bugs": {
+    "url": "https://github.com/dione24/notif-auth-node/issues"
+  },
+  "keywords": [
+    "notif-auth",
+    "whatsapp",
+    "authentication",
+    "oauth",
+    "pkce",
+    "node"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^22"
+  }
+}
