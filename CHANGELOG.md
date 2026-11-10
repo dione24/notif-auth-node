@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.2.0 — unreleased
+## 0.2.1 — 2026-11-10
+
+- `complete()` raises `NotifAuthError('invalid_state')` instead of a raw `TypeError` when the callback has no `state` (or a repeated one) or the transaction is missing.
+- An error response whose `error_code`/`error` is not a string no longer ends up as the error `code`; the fallback code is used.
+- README: the OTP example uses a Sandbox number instead of a number that could belong to a real person.
+
+## 0.2.0 — 2026-10-17
 
 - `sendOtp(phone, { endUserIp?, locale? })` and `verifyOtp(challengeId, code, { endUserIp? })` for the server-to-server OTP endpoints (`POST /server/otp/send`, `POST /server/otp/verify`, CONFIDENTIAL clients, Notif Auth 2026-10-12). `verifyOtp()` returns the same verified profile as `exchange()`.
 - `NotifAuthError` now carries `status`, `retryAfterSeconds` (body `retry_after_seconds` or `Retry-After`) and `attemptsLeft` when the service returns them.

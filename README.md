@@ -2,7 +2,7 @@
 
 Server-side WhatsApp authentication for [Notif Auth](https://auth.notif.ml). Generates OAuth authorization requests with PKCE S256, exchanges authorization codes, and verifies the signed profile using the issuer's public keys.
 
-**Version:** 0.2.0.
+**Version:** 0.2.1.
 
 ## Installation
 
@@ -22,7 +22,7 @@ npm run check
 npm pack
 
 # From your application's directory:
-npm install /path/to/notif-auth-node/spaysarldev-notif-auth-node-0.2.0.tgz
+npm install /path/to/notif-auth-node/spaysarldev-notif-auth-node-0.2.1.tgz
 ```
 
 `npm install github:dione24/notif-auth-node#main` also builds the package from GitHub. Pin a reviewed commit instead of `main` for reproducible production installations.
@@ -77,7 +77,8 @@ A profile contains `subject`, `phone_e164`, optional `display_name`, `mode`, `pr
 For native or backend flows without a browser redirect, a Server application with its client secret can ask Notif Auth to send a six-digit code on WhatsApp, then check it. The result is the same signed profile as `exchange()`.
 
 ```ts
-const challenge = await auth.sendOtp('+223 70 00 00 00', { endUserIp: req.ip, locale: 'fr' });
+const challenge = await auth.sendOtp('+22300000001', { endUserIp: req.ip, locale: 'fr' });
+// '+22300000001' is a Sandbox number; pass the number typed by your user.
 // { challenge_id, phone_masked, expires_at, resend_after_seconds, sends_left }
 // A resend for the same number while the code is valid keeps the same challenge_id.
 
