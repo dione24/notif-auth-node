@@ -38,6 +38,9 @@ test('rejects insecure or non-origin issuers',()=>{
 test('rejects state mismatch before sending an exchange request',async()=>{
  const auth=sdk(),tx=auth.begin().transaction,count=requests;
  await assert.rejects(auth.complete('example-code','wrong-state',tx));assert.equal(requests,count);
+ for(const state of [undefined,['a','b']])await assert.rejects(auth.complete('example-code',state,tx),e=>e instanceof NotifAuthError && e.code==='invalid_state');
+ await assert.rejects(auth.complete('example-code',tx.state,undefined),e=>e instanceof NotifAuthError && e.code==='invalid_state');
+ assert.equal(requests,count);
 });
 test('returns the verified signed profile rather than an unsigned duplicate',async()=>{
  responseToken=await token();const auth=sdk(),tx=auth.begin().transaction;
@@ -66,6 +69,8 @@ test('maps API errors to NotifAuthError with status, request id and retry hints'
 test('reports a non-JSON gateway failure as NotifAuthError',async()=>{
  reply={status:502,body:'<html>Bad gateway</html>'};
  await assert.rejects(sdk().exchange('example-code','v'.repeat(43)),e=>e instanceof NotifAuthError && e.code==='exchange_failed' && e.status===502);
+ reply={status:500,body:{error:{message:'upstream'}}};
+ await assert.rejects(sdk().exchange('example-code','v'.repeat(43)),e=>e instanceof NotifAuthError && e.code==='exchange_failed' && e.status===500);
 });
 test('server OTP requires the client secret and sends nothing without it',async()=>{
  const count=requests;

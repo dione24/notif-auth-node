@@ -37,6 +37,8 @@ export class NotifAuth {
     return {url:`${this.issuer}/authorize?${query}`,transaction};
   }
   async complete(code:string,state:string,transaction:Transaction):Promise<VerifiedProfile>{
+    // A callback without state (or with a repeated one) gives undefined or an array at runtime.
+    if(typeof state!=='string' || typeof transaction?.state!=='string')throw new NotifAuthError('invalid_state');
     const a=Buffer.from(state),b=Buffer.from(transaction.state);
     if(a.length!==b.length || !timingSafeEqual(a,b))throw new NotifAuthError('invalid_state');
     return this.exchange(code,transaction.verifier,transaction.redirectUri);
@@ -86,7 +88,8 @@ export class NotifAuth {
     if(!response.ok){
       const header=Number(response.headers.get('retry-after'));
       const retryAfterSeconds=typeof data.retry_after_seconds==='number'?data.retry_after_seconds:Number.isFinite(header) && header>0?header:undefined;
-      throw new NotifAuthError(data.error_code || data.error || fallback,data.request_id,{status:response.status,retryAfterSeconds,attemptsLeft:typeof data.attempts_left==='number'?data.attempts_left:undefined});
+      const code=[data.error_code,data.error].find(value=>typeof value==='string' && value) || fallback;
+      throw new NotifAuthError(code,typeof data.request_id==='string'?data.request_id:undefined,{status:response.status,retryAfterSeconds,attemptsLeft:typeof data.attempts_left==='number'?data.attempts_left:undefined});
     }
     return data;
   }
